@@ -1,8 +1,12 @@
-MODE-TASK plugin for PyMOL
+Installation
+====================================
+MODE-TASK can be installed by following the instruction given at http://mode-task.readthedocs.io/en/latest/installation.html
 
 **For installing the pyMODE-TASK - a pymol plugin.**
 
 *Requirements:*
+
+::
 
 	python
 	Tkinter
@@ -17,6 +21,7 @@ MODE-TASK plugin for PyMOL
 
 
 **1. Download the project:**
+::
 	
 	git clone https://github.com/RUBi-ZA/pyMODE-TASK.git
 
@@ -28,6 +33,7 @@ Download zip from github page and extract to a directory.
 **2. Install dependencies:**
 
 Run the following command from within pyMODE-TASK directory
+::
 
 	sudo pip install -r requirements.txt
 
@@ -44,16 +50,8 @@ Browse the pyMODE-TASK.py and follow the on screen installation instructions.
  
 3.3. If everything goes well, you can start the plugin from pymol plugin menu. 
 
-## Usage
+**Usage**
 
 For more detailed documentation on installation and usage of the tool suite please see our [ReadTheDocs](http://pymode-task.readthedocs.io/en/latest/index.html) site
-
-### TODO list:
-- [X] Fully functional and ready to install plugin.
-- [X] Resize/adjust NMA tab.
-- [ ] Add progress bar.
-- [ ] Update link in MODE-TASK documentation.
-- [ ] Add better handling of exceptions in NMA tab.
-- [ ] Add feature to identify the MD frame in the PCA projection plot. 
 
 
