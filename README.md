@@ -1,5 +1,7 @@
 MODE-TASK plugin for PyMOL
 
+Command line version is [available here](https://github.com/RUBi-ZA/MODE-TASK).
+
 **For installing the pyMODE-TASK - a pymol plugin.**
 
 *Requirements:*
