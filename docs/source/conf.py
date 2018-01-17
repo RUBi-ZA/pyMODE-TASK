@@ -168,5 +168,4 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-pip install numpy cython
 
