@@ -1,4 +1,4 @@
-<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/>
+<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/> <img src ='https://img.shields.io/badge/python-2.7-blue.svg' align="right">
 
 MODE-TASK plugin for PyMOL
 
