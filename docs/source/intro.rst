@@ -1,9 +1,9 @@
 Introduction
 ====================================
 
-pyMODE-TASK is a pymol plugin of MODE-TASK tool. MODE-TASK is a collection of opensource tools to perform
+pyMODE-TASK is a PyMOL plugin of MODE-TASK tool. MODE-TASK is a collection of open source tools to perform 
 Principle component analysis (PCA), Kernel PCA, Incremental PCA, Multi dimensional analysis (MDS), 
-t-distributed Stochastic Neighbor Embedding (t-SNE) on a protien MD trajectory and, Normal mode analysis (NMA)
+t-distributed Stochastic Neighbor Embedding (t-SNE) on a protein MD trajectory and, Normal mode analysis (NMA) 
 on a protein/viral capsid with a novel coarse graining algorithm.  
 
 Kindly see the detailed documentation of MODE-TASK here 
