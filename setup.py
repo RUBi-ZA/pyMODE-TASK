@@ -2,7 +2,7 @@
 
 
 from setuptools import setup, find_packages
-
+pip install numpy cython
 
 with open('README.md') as f:
     readme = f.read()
