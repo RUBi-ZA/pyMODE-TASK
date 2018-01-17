@@ -17,7 +17,7 @@ setup(
     long_description=readme,
     author='Bilal Nizami',
     author_email='nizamibilal1064@gmail.com',
-    url='https://github.com/bnizami',
+    url='https://github.com/RUBi-ZA/pyMODE-TASK',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
