@@ -1,3 +1,5 @@
+<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/>
+
 MODE-TASK plugin for PyMOL
 
 Command line version is [available here](https://github.com/RUBi-ZA/MODE-TASK).
