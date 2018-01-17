@@ -1,4 +1,4 @@
-<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest' alt='Documentation Status' />
+<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/>
 
 MODE-TASK plugin for PyMOL
 
