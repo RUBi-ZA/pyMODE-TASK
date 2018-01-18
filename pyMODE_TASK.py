@@ -1535,18 +1535,18 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			intPca_file_chk = path+'/src/internal_pca.py'
 			mds_file_chk = path+'/src/mds.py'
 			tsne_file_chk = path+'/src/tsne.py'
-			pca_file_chk = path+'/src/pca.py'
 			ac_file_chk = path+'/src/assemblyCovariance.py'
 			cg_file_chk = path+'/src/coarseGrain.py'
 			com_mod_file_chk = path+'/src/combinationMode.py'
 			conf_mod_file_chk = path+'/src/conformationMode.py'
 			msf_file_chk = path+'/src/meanSquareFluctuations.py'
 			visualiseVector_file_chk = path+'/src/visualiseVector.py'
-			getEigenVectors_file_chk = path+'/src/getEigenVectors'
-			ANM_file_chk = path+'/src/ANM'
-			file_name_list = [pca_file_chk, intPca_file_chk, mds_file_chk, tsne_file_chk, pca_file_chk,\
+			getEigenVectors_file_chk = path+'/src/getEigenVectors.py' 
+			ANM_file_chk = path+'/src/ANM.py'
+			file_name_list = [pca_file_chk, intPca_file_chk, mds_file_chk, tsne_file_chk,\
 								ac_file_chk, cg_file_chk, com_mod_file_chk, conf_mod_file_chk, msf_file_chk,\
 								visualiseVector_file_chk, getEigenVectors_file_chk, ANM_file_chk]
+			print file_name_list
 			for i in file_name_list:
 				chk=1
 				if os.path.isfile(i):
@@ -1559,6 +1559,7 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			result = 0
 			tkMessageBox.showinfo("pyMODE-TASK Error!", "Location of pyMODE-TASK directory not given. Please specify the location of pyMODE-TASK directory in configuration page of the plugin!")
 		return result
+		
 		
 	def run_pca(self):
 		'''run pca'''
@@ -1595,12 +1596,7 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 					else:				
 						tkMessageBox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
 						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -st ' + st_sele
-					out=subprocess.Popen(os.system(cmd), shell=False)
-					#self.pb.start(100)
 					out = `os.system(cmd)`
-					#while out.poll() is None:
-					#	self.update()
-					#self.pb.stop()
 					if out == '0':
 						tkMessageBox.showinfo("pyMODE-TASK!", "PCA (SVD) run successful!\nResults are written in\n" + out_loc)
 					else:
