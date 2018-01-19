@@ -2,4 +2,4 @@
 
 pwd
 ls
-./pypca.py
+./pyMODE-TASK.py
