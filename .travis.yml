@@ -16,8 +16,6 @@ matrix:
        packages:
         - python-tk
         - Pmw
-    - os: osx
-      language: generic
 
 install:
   - pip install --upgrade pip
