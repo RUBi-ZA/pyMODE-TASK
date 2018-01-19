@@ -36,6 +36,7 @@ install:
   - ls
   - pwd
   - sudo python ../setup.py install
+  - ls /home/travis/build/
   - cd /home/travis/build/nizamibilal/pyMODE-TASK
 
 before_script:
