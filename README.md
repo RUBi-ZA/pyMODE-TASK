@@ -55,6 +55,14 @@ Browse the pyMODE-TASK.py and follow the on screen installation instructions.
 
 For more detailed documentation on installation and usage of the tool suite please see our [ReadTheDocs](http://pymode-task.readthedocs.io/en/latest/index.html) site
 
+## Contributing to the project
+
+Questions and issues can be posted to the [issue tracker](https://github.com/RUBi-ZA/pyMODE-TASK/issues).
+
+Pull requests are welcome and will be reviewed however a guarentee can not me made as to your request being accepted.
+
+The documentation is hosted by [ReadTheDocs](https://readthedocs.org/) and makes use of reStructuredText for markdown with Latex for mathematical equasions. See [here](https://docs.readthedocs.io/en/latest/getting_started.html) for a more detailed guideline on creating documentation for ReadTheDocs.
+
 ### TODO list:
 - [X] Fully functional and ready to install plugin.
 - [X] Resize/adjust NMA tab.
