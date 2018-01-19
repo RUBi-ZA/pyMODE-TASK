@@ -37,7 +37,7 @@ install:
   - pwd
   - sudo python ../setup.py install
   - ls /home/travis/build/
-  - cd /home/travis/build/nizamibilal/pyMODE-TASK
+  - cd /home/travis/build/RUBi-ZA/pyMODE-TASK
 
 before_script:
   - "export DISPLAY=:99.0"
