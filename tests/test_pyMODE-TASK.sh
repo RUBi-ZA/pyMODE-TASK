@@ -2,4 +2,4 @@
 
 pwd
 ls
-./pyMODE-TASK.py
+#./pyMODE-TASK.py
