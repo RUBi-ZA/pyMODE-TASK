@@ -139,42 +139,42 @@ class PyMODETASK:
 				label = 'Exit',
 				command=self.dialog.interior().quit)
 	
-		# Add Help menu bar.
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/index.html")
+		# Add Help menu bar. 
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/index.html")
 		self.menuBar.addmenu('Help', 'Help page')
 		self.menuBar.addmenuitem('Help', 'command', label='Help Page',
 			command=page.openpage)
 		
-		page=MyHelpPage("file:///home/bilal/work/MT-PyMOL/docs/build/html/index.html")
+		page=MyHelpPage("http://pymode-task.readthedocs.io/en/latest/index.html")
 		#self.menuBar.addmenu('Help', 'pyMODE-TASK help')
 		self.menuBar.addmenuitem('Help', 'command', label='pyMODE-TASK help',
 			command=page.openpage)
 			
 		
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/theory.html")		
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/theory.html")		
 		self.menuBar.addmenuitem('Help', 'separator')
 		self.menuBar.addmenuitem('Help', 'command', label='PCA Theory',
 			command=page.openpage)
 		
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/theory.html")		
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/theory.html")		
 		self.menuBar.addmenuitem('Help', 'command', label='NMA Theory', 
 			command=page.openpage)
 		
 		self.menuBar.addmenuitem('Help', 'separator')
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/pca_use.html")		
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/pca_use.html")		
 		self.menuBar.addmenuitem('Help', 'command', label='PCA Usage',
 			command=page.openpage)
 		
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/nma_use.html")		
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/nma_use.html")		
 		self.menuBar.addmenuitem('Help', 'command', label='NMA Usage', 
 			command=page.openpage)
 		
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/pca_tut.html")			
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/pca_tut.html")			
 		self.menuBar.addmenuitem('Help', 'separator')
 		self.menuBar.addmenuitem('Help', 'command', label='PCA Tutorial',
 			command=page.openpage)
 		
-		page=MyHelpPage("file:///home/bilal/work/pyMODE-TASK/src/docs/build/html/nma_tut.html")		
+		page=MyHelpPage("http://mode-task.readthedocs.io/en/latest/nma_tut.html")		
 		self.menuBar.addmenuitem('Help', 'command', label='NMA Tutorial',
 			command=page.openpage)
 		
