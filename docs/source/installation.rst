@@ -2,7 +2,7 @@ Installation
 ====================================
 MODE-TASK can be installed by following the instruction given at http://mode-task.readthedocs.io/en/latest/installation.html
 
-**For installing the pyMODE-TASK - a pymol plugin.**
+**For installing the pyMODE-TASK - a PyMOL plugin.**
 
 *Requirements:*
 
@@ -41,14 +41,14 @@ Run the following command from within pyMODE-TASK directory
 pyMODE-TASK requires Tkinter and Pmw.1.3. Tkinter comes prepackaged with most standard python. Pmw could be installed by following the instruction from:
 http://pmw.sourceforge.net/doc/starting.html
 
-**3. Install pyMODE-TASK plugin in pymol:**
+**3. Install pyMODE-TASK plugin in PyMOL:**
 
-3.1. Start pymol
+3.1. Start PyMOL
 
 3.2. Go to Plugin -> Plugin Manager, and clcik on install new plugin tab. Under install from local file click on 'choose file...' button.
 Browse the pyMODE-TASK.py and follow the on screen installation instructions.
  
-3.3. If everything goes well, you can start the plugin from pymol plugin menu. 
+3.3. If everything goes well, you can start the plugin from PyMOL plugin menu. 
 
 **Usage**
 

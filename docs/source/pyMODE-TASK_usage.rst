@@ -1,7 +1,7 @@
 pyMODE-TASK usage
 ====================================
 
-pyMODE-TASK is a pymol plugin and GUI for command line based MODE-TASK tool. It include all the functionality
+pyMODE-TASK is a PyMOL plugin and GUI for command line based MODE-TASK tool. It include all the functionality
 of the MODE-TASK. 
 
 PCA of a MD trajectory
@@ -14,7 +14,7 @@ periodicity if any.
 
 **2. PCA**
 
-1. Start the plugin from pymol, plugin --> pyMODE-TASK.
+1. Start the plugin from PyMOL, plugin --> pyMODE-TASK.
 2. Locate the pyMODE-TASK directory in the configuration tab by clicking on button "pyMODE-TASK directory". 
 Browse to the directory and click ok.
 
