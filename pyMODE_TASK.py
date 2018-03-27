@@ -793,11 +793,52 @@ Normally the core scripts should be within pyMODE-TASK/src directory."""
 		self.atm_ind_buttons.add('backbone', command = self.ok, text='Backbone')
 		self.atm_ind_buttons.add('protein', command = self.ok, text='Protein')
 		self.atm_ind_buttons.invoke('CA')
+		
+		# n_itr 
+		self.n_itr = Pmw.EntryField(self.tsne_page_main_group.interior(),
+				labelpos = 'w',
+				label_text = 'Iterations:',
+				value = 3000,
+				command = self.get_n_itr)
+				
+		self.n_itr.pack(fill = 'both', expand = 1, padx = 2, pady = 2)
+				
+		self.balloon.bind(self.n_itr, 'Maximum number of iterations for the optimization',
+			'Number of iteration')	
+
+		# perplexity 
+		self.perplexity = Pmw.EntryField(self.tsne_page_main_group.interior(),
+				labelpos = 'w',
+				label_text = 'Perplexity:',
+				value = 30.0,
+				command = self.get_perplexity)
+				
+		self.perplexity.pack(fill = 'both', expand = 1, padx = 2, pady = 2)
+				
+		self.balloon.bind(self.perplexity, 'The perplexity is related to the number of nearest neighbors that is used in other manifold learning algorithms. (float)',
+			'perplexity')
+
+		# Learning rate 
+		self.learning_rate = Pmw.EntryField(self.tsne_page_main_group.interior(),
+				labelpos = 'w',
+				label_text = 'Learning rate:',
+				value = 200.0,
+				command = self.get_learning_rate)
+				
+		self.learning_rate.pack(fill = 'both', expand = 1, padx = 2, pady = 2)
+				
+		self.balloon.bind(self.learning_rate, 'The learning rate for t-SNE',
+			'Learning rate')			
+		
 		mds_options_buttons=(self.mds_type_buttons, 
 			self.atm_grp_buttons,  
 			self.tsne_dissimilarity_type, 
 			self.tsne_cord_type,
-			self.atm_ind_buttons)
+			self.atm_ind_buttons,
+			self.n_itr,
+			self.perplexity,
+			self.learning_rate)
+			
 		Pmw.alignlabels(mds_options_buttons)
 		
 		# Run t-SNE button
@@ -1731,12 +1772,16 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			dist_type = self.mds_dissimilarity_type.getvalue()
 			out_loc = self.mds_out_dir_location.getvalue()
 			atm_ind = self.mds_atm_ind_buttons.getvalue()
+			nitr = self.n_itr.getvalue()
+			lr = self.learning_rate.getvalue()
+			perp = self.perplexity.getvalue()
+			#print out_loc
 			if trj_loc == '':
 				tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
 			if top_loc == '':
 				tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
 			else:	
-				cmd = cmd_dir+'tsne.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele + ' -ai ' + atm_ind + ' -dt ' + dist_type
+				cmd = cmd_dir+'tsne.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele + ' -ai ' + atm_ind + ' -dt ' + dist_type + ' -lr ' + lr + ' -pr ' + perp + ' -ni ' + nitr
 				out = `os.system(cmd)`
 				#print type(out)
 				if out == '0':
@@ -2077,6 +2122,18 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 	def get_pc_selection(self, sele_option):
 		n= self.pca_comp.getvalue()
 		return n
+		
+	def get_n_itr(self, sele_option):
+		n= self.n_itr.getvalue()
+		return n
+		
+	def get_learning_rate(self, sele_option):
+		n= self.learning_rate.getvalue()
+		return n
+		
+	def get_perplexity(self, sele_option):
+		n= self.perplexity.getvalue()
+		return n	
 		
 	def get_cg_selection(self, sele_option):
 		n= self.cg_level.getvalue()
