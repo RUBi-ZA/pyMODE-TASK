@@ -69,7 +69,7 @@ The documentation is hosted by [ReadTheDocs](https://readthedocs.org/) and makes
 
 ## Citattion
 
-Caroline Ross, Bilal Nizami, Michael Glenister, Olivier Sheik Amamuddy, Ali Rana Atilgan, Canan Atilgan, Özlem Tastan Bishop; MODE-TASK: Large-scale protein motion tools, Bioinformatics, , bty427, https://doi.org/10.1093/bioinformatics/bty427
+Caroline Ross, Bilal Nizami, Michael Glenister, Olivier Sheik Amamuddy, Ali Rana Atilgan, Canan Atilgan, Özlem Tastan Bishop; MODE-TASK: Large-scale protein motion tools, Bioinformatics, May 2018 , bty427, https://doi.org/10.1093/bioinformatics/bty427
 
 
 ### TODO list:
