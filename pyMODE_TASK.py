@@ -1467,7 +1467,7 @@ pyMODE-TASK- is Copyright (C) 2017 by Bilal Nizami, RUBi, Rhodes University.
 pyMODE-TASK is a pymol plugin for MODE-TASK. If you use MODE-TASK and/or pyMODE-TASK, kindly cite the 
 following paper.
 
-(1)- Bilal Nizami, Caroline Ross, Michael Glenister, Olivier Sheik Amamuddy, Ali Rana Atilgan, Canan Atilgan, Özlem Tastan Bishop; MODE-TASK: Large-scale protein motion tools, Bioinformatics, May 2018 , https://doi.org/10.1093/bioinformatics/bty427
+(1)- Bilal Nizami, Caroline Ross, Michael Glenister, Olivier Sheik Amamuddy, Ali Rana Atilgan, Canan Atilgan, Ozlem Tastan Bishop; MODE-TASK: Large-scale protein motion tools, Bioinformatics, May 2018 , https://doi.org/10.1093/bioinformatics/bty427
 
 
 pyMODE-TASK is written by:
