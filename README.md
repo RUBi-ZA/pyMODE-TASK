@@ -1,10 +1,9 @@
-<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/> <img src ='https://img.shields.io/badge/python-2.7-blue.svg' align="right"> <img src='https://travis-ci.org/RUBi-ZA/pyMODE-TASK.svg?branch=master' align="right">
-<img src='https://anaconda.org/nizamibilal1064/mode-task/badges/version.svg' align="right"> <img src='https://anaconda.org/nizamibilal1064/mode-task/badges/downloads.svg' align="right"> 
-
-
+<img src='https://readthedocs.org/projects/pymode-task/badge/?version=latest'  align="right"/> <img src ='https://img.shields.io/badge/python-3-blue.svg' align="right"> 
 
 
 # pyMODE-TASK
+
+update: 13Apr2023. Earlier version was only python2 compatible. Now it works with python3 only.
 
 MODE-TASK plugin for PyMOL
 
@@ -84,5 +83,4 @@ The documentation is hosted by [ReadTheDocs](https://readthedocs.org/) and makes
 - [X] Update link in MODE-TASK documentation.
 - [ ] Add better handling of exceptions in NMA tab.
 - [ ] Add feature to identify the MD frame in the PCA projection plot. 
-
 
