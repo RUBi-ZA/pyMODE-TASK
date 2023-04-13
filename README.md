@@ -3,7 +3,7 @@
 
 # pyMODE-TASK
 
-update: 13Apr2023. Earlier version was only python2 compatible. Now it works with python3 only.
+update: 13Apr2023. Earlier version was only python2 compatible. Now it works with python3 only.  
 
 MODE-TASK plugin for PyMOL
 
@@ -12,6 +12,7 @@ Command line version is [available here](https://github.com/RUBi-ZA/MODE-TASK).
 **For installing the pyMODE-TASK - a pymol plugin.**
 
 *Requirements:*
+
 	python3
 	Tkinter
 	Pmw
