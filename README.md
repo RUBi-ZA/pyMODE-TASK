@@ -12,8 +12,7 @@ Command line version is [available here](https://github.com/RUBi-ZA/MODE-TASK).
 **For installing the pyMODE-TASK - a pymol plugin.**
 
 *Requirements:*
-
-	python
+	python3
 	Tkinter
 	Pmw
 	numpy==1.13.1
