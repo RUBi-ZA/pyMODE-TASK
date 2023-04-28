@@ -57,10 +57,10 @@ else:
 	home = str(Path.home())
 	
 import subprocess
-from ttk import Separator, Style
-import ttk
+from tkinter.ttk import Separator, Style
+import tkinter.ttk
 import Pmw
-import tkMessageBox, tkFileDialog
+import tkinter.messagebox, tkinter.filedialog
 import os
 import pymol
 from pymol import cmd
@@ -1566,7 +1566,7 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 		self.about.show()
 
 	def ok(self):
-		print 'You clicked on OK'
+		print('You clicked on OK')
 	
 	def check_conf_status(self):
 		'''Check if the configuration tab is set and core files exist'''
@@ -1588,7 +1588,7 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			file_name_list = [pca_file_chk, intPca_file_chk, mds_file_chk, tsne_file_chk,\
 								ac_file_chk, cg_file_chk, com_mod_file_chk, conf_mod_file_chk, msf_file_chk,\
 								visualiseVector_file_chk, getEigenVectors_file_chk, ANM_file_chk]
-			print file_name_list
+			#print(file_name_list)
 			for i in file_name_list:
 				chk=1
 				if os.path.isfile(i):
@@ -1596,12 +1596,23 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 				else:
 					chk = 0
 			if chk == 0:
-				tkMessageBox.showinfo("pyMODE-TASK Warning!", "Can not locate some core MODE-TASK scripts. Please insure that the path given in configuration tab is correct and contains MODE-TASK core scripts , otherwise it might give an error in the next steps")				
+				tkinter.messagebox.showinfo("pyMODE-TASK Warning!", "Can not locate some core MODE-TASK scripts. Please insure that the path given in configuration tab is correct and contains MODE-TASK core scripts , otherwise it might give an error in the next steps")				
 		else:
 			result = 0
-			tkMessageBox.showinfo("pyMODE-TASK Error!", "Location of pyMODE-TASK directory not given. Please specify the location of pyMODE-TASK directory in configuration page of the plugin!")
+			tkinter.messagebox.showinfo("pyMODE-TASK Error!", "Location of pyMODE-TASK directory not given. Please specify the location of pyMODE-TASK directory in configuration page of the plugin!")
 		return result
-		
+	
+	## check if trajectory location set
+	def check_traj_topol_path(self, trj_loc, top_loc):
+		'''check if trajectory and/or toplology path is empty. If empty show error message
+		and return True'''
+
+		if trj_loc == '':
+			tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No trajectory location given")
+			return True
+		if top_loc == '':
+			tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No topology location given!")
+			return True
 		
 	def run_pca(self):
 		'''run pca'''
@@ -1621,91 +1632,46 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			out_loc = self.pca_out_dir_location.getvalue()
 			ref_loc = self.pca_ref_file.getvalue()
 	
-			# run SVD
-			
-			if pc_sele == 'svd':
-			
-				if trj_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-				if top_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
+			# actual function to run type of pca
+			def run_pca_type(pc_sele):
+				'''run pca type based on user selection. e.g. SVD, EVD, KPCA, IPCA'''
+
+				## map different PCA types to corresponding commands line argument. 
+				pca_type = {'svd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc + ' -st ' + st_sele,
+							'evd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc,
+							'kpca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc + ' -kt ' + kt_sele,
+							'ipca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc}
 				
-				else:
-					if ref_loc != '':
-						
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc + ' -st ' + st_sele
-						
-					else:				
-						tkMessageBox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -st ' + st_sele
-					out = `os.system(cmd)`
-					if out == '0':
-						tkMessageBox.showinfo("pyMODE-TASK!", "PCA (SVD) run successful!\nResults are written in\n" + out_loc)
-					else:
-						tkMessageBox.showinfo("pyMODE-TASK!", "PCA (SVD) run failed. See terminal for details!")			
-			
-			# run EVD
-			elif pc_sele == 'evd':
-				if trj_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-				if top_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
+				pca_type_no_ref = {'svd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -st ' + st_sele,
+							'evd': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc,
+							'kpca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -kt ' + kt_sele,
+							'ipca': cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc}
 				
-				else:
-					if ref_loc != '':
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc
-					else:				
-						tkMessageBox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc
-					
-					out = `os.system(cmd)`
-					if out == '0':
-						tkMessageBox.showinfo("pyMODE-TASK!", "PCA (EVD) run successful!\nResults are written in \n" + out_loc)
-					else:
-						tkMessageBox.showinfo("pyMODE-TASK!", "PCA (EVD) run failed. See terminal for details!")
-			
-			# run kernel PCA
-			elif pc_sele == 'kpca':
-				if trj_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-				if top_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
+				##check if trajectory and topology paths are empty. If true stop the function. 
+				if self.check_traj_topol_path(trj_loc=trj_loc, top_loc=top_loc):
+					return ## stop the fucntion
 				
-				else:
-					if ref_loc != '':
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc + ' -kt ' + kt_sele
-					else:				
-						tkMessageBox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -kt ' + kt_sele
-					
-					out = `os.system(cmd)`
-					if out == '0':
-						tkMessageBox.showinfo("pyMODE-TASK!", "Kernel PCA run successful!\nResults are written in \n" + out_loc)
-					else:
-						tkMessageBox.showinfo("pyMODE-TASK!", "Kernel PCA run failed. See terminal for details!")
-			
-			# run ipca
-			elif pc_sele == 'ipca':
-				if trj_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-				if top_loc == '':
-					tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
 				
+				if ref_loc != '':
+					cmd = pca_type[pc_sele]
+				else:				
+					tkinter.messagebox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
+					cmd = pca_type_no_ref[pc_sele]
+				out = repr(os.system(cmd))
+				if out == '0':
+					msg = f"pyMODE-TASK!, PCA ({pc_sele}) run successful!\nResults are written in\n {out_loc}"
+					tkinter.messagebox.showinfo(title='Info',message=msg)
 				else:
-					if ref_loc != '':
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc + ' -r ' + ref_loc 
-					else:				
-						tkMessageBox.showinfo("pyMODE-TASK warning!", "No Ref structure given, using deafult first frame!")
-						cmd = cmd_dir+'pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag '+ ag_sele + ' -pt '+ pc_sele + ' -out ' + out_loc
-					
-					out = `os.system(cmd)`
-					if out == '0':
-						tkMessageBox.showinfo("pyMODE-TASK!", "Incremental PCA run successful!\nResults are written in \n" + out_loc)
-					else:
-						tkMessageBox.showinfo("pyMODE-TASK!", "Incremental PCA run failed. See terminal for details!")	
-		#self.pb.stop()
+					msg = f"pyMODE-TASK!, PCA ({pc_sele}) run failed. See terminal for details!"
+					tkinter.messagebox.showinfo(title='Info', message=msg)
+				return None
+			## call function
+			run_pca_type(pc_sele)
+
+#########################################################################
+
 	def run_ipca(self):
-	
+		'''run ipca'''
 		# core scripts are located at src directory under pyMODE-TASK directory
 		#cmd_dir = './src'
 		status = self.check_conf_status()
@@ -1717,19 +1683,18 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			ag_sele = self.ipca_atm_grp_buttons.getvalue()
 			pc_comp = self.pca_comp.getvalue()
 			out_loc = self.ipca_out_dir_location.getvalue()
-		
-			if trj_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-			if top_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
-			else:	
-				cmd = cmd_dir+'internal_pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele
-				out = `os.system(cmd)`
-				#print type(out)
-				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "Internal PCA run successful!\nResults are written in Output Directory!")
-				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "Internal PCA run failed. See terminal for details!")
+
+			##check if trajectory and topology paths are empty. If true stop the function. 
+			if self.check_traj_topol_path(trj_loc=trj_loc, top_loc=top_loc):
+					return ## stop the fucntion
+			
+			cmd = cmd_dir+'internal_pca.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele
+			out = repr(os.system(cmd))
+			if out == '0':
+				tkinter.messagebox.showinfo("pyMODE-TASK!", "Internal PCA run successful!\nResults are written in Output Directory!")
+			else:
+				tkinter.messagebox.showinfo("pyMODE-TASK!", "Internal PCA run failed. See terminal for details!")
+		return None
 	
 	def run_mds(self):
 	
@@ -1746,18 +1711,18 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			dist_type = self.mds_dissimilarity_type.getvalue()
 			out_loc = self.mds_out_dir_location.getvalue()
 			atm_ind = self.mds_atm_ind_buttons.getvalue()
-			if trj_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-			if top_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
-			else:	
-				cmd = cmd_dir+'mds.py -t '+ trj_loc + ' -p ' + top_loc + ' -mt ' + mds_type +' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele + ' -ai ' + atm_ind + ' -dt ' + dist_type
-				out = `os.system(cmd)`
-				#print type(out)
-				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "MDS run successful!\nResults are written in \n" + out_loc)
-				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "MDS run failed. See terminal for details!")
+			
+			##check if trajectory and topology paths are empty. If true stop the function. 
+			if self.check_traj_topol_path(trj_loc=trj_loc, top_loc=top_loc):
+					return ## stop the fucntion
+			
+			cmd = cmd_dir+'mds.py -t '+ trj_loc + ' -p ' + top_loc + ' -mt ' + mds_type +' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele + ' -ai ' + atm_ind + ' -dt ' + dist_type
+			out = repr(os.system(cmd))
+			#print type(out)
+			if out == '0':
+				tkinter.messagebox.showinfo("pyMODE-TASK!", "MDS run successful!\nResults are written in \n" + out_loc)
+			else:
+				tkinter.messagebox.showinfo("pyMODE-TASK!", "MDS run failed. See terminal for details!")
 	
 	def run_tsne(self):
 	
@@ -1777,18 +1742,19 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			lr = self.learning_rate.getvalue()
 			perp = self.perplexity.getvalue()
 			#print out_loc
-			if trj_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No trajectory location given!")
-			if top_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No topology location given!")
-			else:	
-				cmd = cmd_dir+'tsne.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele + ' -ai ' + atm_ind + ' -dt ' + dist_type + ' -lr ' + lr + ' -pr ' + perp + ' -ni ' + nitr
-				out = `os.system(cmd)`
-				#print type(out)
-				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "t-SNE run successful!\nResults are written in \n" + out_loc)
-				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "t-SNE run failed. See terminal for details!")
+
+			##check if trajectory and topology paths are empty. If true stop the function. 
+			if self.check_traj_topol_path(trj_loc=trj_loc, top_loc=top_loc):
+					return ## stop the fucntion
+			
+			
+			cmd = cmd_dir+'tsne.py -t '+ trj_loc + ' -p ' + top_loc + ' -ag ' + ag_sele + ' -out ' + out_loc + ' -ct ' + ct_sele + ' -ai ' + atm_ind + ' -dt ' + dist_type + ' -lr ' + lr + ' -pr ' + perp + ' -ni ' + nitr
+			out = repr(os.system(cmd))
+			#print type(out)
+			if out == '0':
+				tkinter.messagebox.showinfo("pyMODE-TASK!", "t-SNE run successful!\nResults are written in \n" + out_loc)
+			else:
+				tkinter.messagebox.showinfo("pyMODE-TASK!", "t-SNE run failed. See terminal for details!")
 	
 	def run_cg(self):
 		# core scripts are located at src directory under pyMODE-TASK directory
@@ -1805,14 +1771,14 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			#print type(start_atm)
 			atm_type = 'CB'
 			if pdb_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
 			else:	
 				cmd = cmd_dir+'coarseGrain.py --pdb ' + pdb_loc + ' --cg ' + cg_level + ' --atomType ' + atm_type + ' --startingAtom ' + start_atm + ' --outdir ' + out_loc + ' --output ' + out_pdb
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "Coarse graining run successful!\nResults are written in \n" + out_loc)
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "Coarse graining run successful!\nResults are written in \n" + out_loc)
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "Coarse graining run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "Coarse graining run failed. See terminal for details!")
 	
 	def run_nma(self):
 		# core scripts are located at src directory under pyMODE-TASK directory
@@ -1825,15 +1791,15 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			out_loc = self.nma_out_dir_location.getvalue()
 			atm_type = self.nma_atm_type.getvalue()
 			if pdb_loc == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
 			else:	
-				cmd = cmd_dir+'ANM --pdb ' + pdb_loc + ' --cutoff ' + cutoff + ' --outdir ' + out_loc + ' --atomType ' + atm_type
-				out = `os.system(cmd)`
+				cmd = cmd_dir+'ANM.py --pdb ' + pdb_loc + ' --cutoff ' + cutoff + ' --outdir ' + out_loc + ' --atomType ' + atm_type
+				out = repr(os.system(cmd))
 				#print type(out)
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "NMA run successful!\nResults are written in \n" + out_loc)
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "NMA run successful!\nResults are written in \n" + out_loc)
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "NMA run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "NMA run failed. See terminal for details!")
 	
 	def run_conf_mode(self):
 		status = self.check_conf_status()
@@ -1847,19 +1813,19 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			cmd_dir = self.mode_task_location1.getvalue() + '/src/'
 			
 			if unal_pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No unaligned PDB location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No unaligned PDB location given!")
 			if pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
 			if vtfile == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No VT File location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No VT File location given!")
 			else:
 				cmd = cmd_dir+'conformationMode.py --pdbConf ' + unal_pdb + ' --pdbANM ' + pdb + ' --vtMatrix ' +  vtfile + ' --outdir ' + out_loc + ' --atomType ' + atm_type
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				#print out
 				if out == '0':
-						tkMessageBox.showinfo("pyMODE-TASK!", "conformationMode run successful!\nResults are written in \n" + out_loc)
+						tkinter.messagebox.showinfo("pyMODE-TASK!", "conformationMode run successful!\nResults are written in \n" + out_loc)
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "conformationMode run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "conformationMode run failed. See terminal for details!")
 	
 	def run_comb_mode(self):
 		status = self.check_conf_status()
@@ -1874,18 +1840,18 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			cmd_dir = self.mode_task_location1.getvalue() + '/src/'
 			
 			if unal_pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No unaligned PDB location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No unaligned PDB location given!")
 			if pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB location given!")
 			if vtfile == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No VT File location given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No VT File location given!")
 			else:
 				cmd = cmd_dir+'combinationMode.py --pdbConf ' + unal_pdb + ' --pdbANM ' + pdb + ' --vtMatrix ' +  vtfile + ' --outdir ' + out_loc + ' --atomType ' + atm_type + ' --modes ' + modes
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				if out == '0':
-						tkMessageBox.showinfo("pyMODE-TASK!", "combinationMode run successful!\nResults are written in \n" + out_loc)
+						tkinter.messagebox.showinfo("pyMODE-TASK!", "combinationMode run successful!\nResults are written in \n" + out_loc)
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "combinationMode run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "combinationMode run failed. See terminal for details!")
 	
 	def run_msf(self):
 		status = self.check_conf_status()
@@ -1901,21 +1867,21 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			# core scripts are located at src directory under pyMODE-TASK directory
 			cmd_dir = self.mode_task_location1.getvalue() + '/src/'
 			if pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB given!")
 			if wMatrix1 == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No WMatrix file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No WMatrix file given!")
 			if vtMatrix1 == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No VT Matrix file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No VT Matrix file given!")
 			elif pdb_conf == '':
 				cmd = cmd_dir+'meanSquareFluctuations.py --pdb ' + pdb + ' --vtMatrix ' +  vtMatrix1  + ' --atomType ' + at_type + ' --wMatrix ' + wMatrix1 + ' --modes ' + modes
-				out = `os.system(cmd)`
+				repr(os.system(cmd))
 			else:
 				cmd = cmd_dir+'meanSquareFluctuations.py --pdb ' + pdb + ' --pdbC ' + pdb_conf + ' --vtMatrix ' +  vtMatrix1  + ' --vtMatrixC ' +  vtMatrix2  + ' --atomType ' + at_type + ' --wMatrix ' + wMatrix1 + ' --wMatrixC ' + wMatrix2 + ' --modes ' + modes
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "MSF run successful!\nResults are written in output directory")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "MSF run successful!\nResults are written in output directory")
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "MSF run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "MSF run failed. See terminal for details!")
 		
 	def run_ac(self):
 		status = self.check_conf_status()
@@ -1934,26 +1900,26 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			# core scripts are located at src directory under pyMODE-TASK directory
 			cmd_dir = self.mode_task_location1.getvalue() + '/src/'
 			if ac_pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB given!")
 			if ac_wmf == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No WMatrix file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No WMatrix file given!")
 			if ac_vtf == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No VT Matrix file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No VT Matrix file given!")
 			elif asymm_unit == '': 
 				cmd = cmd_dir+'assemblyCovariance.py --pdb ' + ac_pdb + ' --vtMatrix ' +  ac_vtf  + ' --atomType ' + atm_type + ' --wMatrix ' + ac_wmf + ' --modes ' + mode + ' --zoom ' + zoom + ' --vmin ' + vmin + ' --vmax ' + vmax
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				#print out
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "assembly Covariance run successful!\nResults are written in \n output directory")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "assembly Covariance run successful!\nResults are written in \n output directory")
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "assembly Covariance run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "assembly Covariance run failed. See terminal for details!")
 			else:
 				cmd = cmd_dir+'assemblyCovariance.py --pdb ' + ac_pdb + ' --vtMatrix ' +  ac_vtf  + ' --atomType ' + atm_type + ' --wMatrix ' + ac_wmf + ' --modes ' + mode + ' --zoom ' + zoom + ' --vmin ' + vmin + ' --vmax ' + vmax + ' --aUnits ' + asymm_unit
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "assembly Covariance run successful!\nResults are written in \n output directory")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "assembly Covariance run successful!\nResults are written in \n output directory")
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "assembly Covariance run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "assembly Covariance run failed. See terminal for details!")
 				
 	def run_get_eigen(self):
 		status = self.check_conf_status()
@@ -1964,18 +1930,18 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			ge_vt_file=self.ge_vtfile_location.getvalue()
 			mode_idx = self.ge_mode_idx.getvalue()
 			direction = self.ge_direction.getvalue()
-			print ge_vt_file
+			print(ge_vt_file)
 			if ge_vt_file == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No VT Matrix file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No VT Matrix file given!")
 			if mode_idx == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No mode index given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No mode index given!")
 			else:	
 				cmd = cmd_dir+'getEigenVectors --vtMatrix ' + ge_vt_file + ' --mode ' + mode_idx + ' --direction ' + direction
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "getEigenVectors run successful!\nResults are written in output directory\n")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "getEigenVectors run successful!\nResults are written in output directory\n")
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "getEigenVectors run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "getEigenVectors run failed. See terminal for details!")
 	
 	def run_mode_vis(self):
 		status = self.check_conf_status()
@@ -1990,19 +1956,19 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 			mode_idx = self.ge_mode_idx.getvalue()
 			direction = self.ge_direction.getvalue()
 			if mv_pdb == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No PDB file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No PDB file given!")
 			if mode_idx == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No mode index given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No mode index given!")
 			if ge_vt_file == '':
-				tkMessageBox.showinfo("pyMODE-TASK Error!", "No vtMatrix file given!")
+				tkinter.messagebox.showinfo("pyMODE-TASK Error!", "No vtMatrix file given!")
 
 			else:	
 				cmd = cmd_dir+'visualiseVector.py --pdb ' + mv_pdb + ' --vtMatrix ' + ge_vt_file + ' --mode ' + mode_idx + ' --atomType  ' + mv_at + ' --direction ' + direction
-				out = `os.system(cmd)`
+				out = repr(os.system(cmd))
 				if out == '0':
-					tkMessageBox.showinfo("pyMODE-TASK!", "Mode visualization run successful!\nResults are written in output directory\n")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "Mode visualization run successful!\nResults are written in output directory\n")
 				else:
-					tkMessageBox.showinfo("pyMODE-TASK!", "Mode visualization run failed. See terminal for details!")
+					tkinter.messagebox.showinfo("pyMODE-TASK!", "Mode visualization run failed. See terminal for details!")
 	
 	#=====================================
 	# Configuration tab methods
@@ -2206,7 +2172,7 @@ Research Unit in Bioinformatics (RUBi), Rhodes University, Grahamstown, South Af
 		return n
 		
 	def about(self):
-		print "pyMODE-TASK!\n pymol plugin of MODE-TASK\n MODE-TASK: a software tool to perform PCA and NMA of protein structure and MD trajectories"
+		print("pyMODE-TASK!\n pymol plugin of MODE-TASK\n MODE-TASK: a software tool to perform PCA and NMA of protein structure and MD trajectories")
 
 class FileDialogButtonClassFactory:
 	def get(fn,mode = 'r',filter=[("Executable",'*')]):
@@ -2220,7 +2186,7 @@ class FileDialogButtonClassFactory:
 				'''when we get a file, we call fn(filename)'''
 				self.fn = fn
 				self.__toggle = 0
-				apply(Button.__init__, (self, master, cnf), kw)
+				Button.__init__(*(self, master, cnf), **kw)
 				self.configure(command=self.set)
 			def set(self):
 				if mode == 'r':
@@ -2244,7 +2210,7 @@ class DirDialogButtonClassFactory:
 				'''when we get a file, we call fn(filename)'''
 				self.fn = fn
 				self.__toggle = 0
-				apply(Button.__init__, (self, master, cnf), kw)
+				Button.__init__(*(self, master, cnf), **kw)
 				self.configure(command=self.set)
 			def set(self):
 				fd = PmwDirDialog(self.master)
@@ -2538,7 +2504,7 @@ class PmwFileDialog(Pmw.Dialog):
         try:
             fl=os.listdir(dir)
             fl.sort()
-        except os.error,arg:
+        except os.error as arg:
             if arg[0] in (2,20):
                 return
             raise
@@ -2619,7 +2585,7 @@ class PmwDirDialog(PmwFileDialog):
         try:
             fl=os.listdir(dir)
             fl.sort()
-        except os.error,arg:
+        except os.error as arg:
             if arg[0] in (2,20):
                 return
             raise
@@ -2679,13 +2645,13 @@ class MyFileDialog:
         self.types = types
 
     def getopenfile(self):
-        result = tkFileDialog.askopenfilename(filetypes=self.types)
+        result = tkinter.filedialog.askopenfilename(filetypes=self.types)
         if result == "":
             return None
         else:
             return result
     def getsavefile(self):
-        result = tkFileDialog.asksaveasfilename(filetypes=self.types)
+        result = tkinter.filedialog.asksaveasfilename(filetypes=self.types)
         if result == "":
             return None
         else:
